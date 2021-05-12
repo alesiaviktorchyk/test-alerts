@@ -16,6 +16,6 @@ jobs:
     name: Security Monitor
     steps:
     - name: Security Monitor
-      uses: oneflow/security-monitor-action@master
+      uses: alesiaviktorchyk/security-check-action@master
       with:
         gh-pat: ${{ secrets.gh_pat }} # github personal access token
