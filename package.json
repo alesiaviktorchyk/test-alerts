@@ -9,7 +9,7 @@
   "author": "Alesia",
   "dependencies": {
     "graphql-request": "^1.8.2",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1"
   }
