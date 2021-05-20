@@ -9,9 +9,7 @@ on:
       - review_requested
     branches:
       - "*"
-concurrency:
-  group: security-monitor
-  cancel-in-progress: true
+concurrency: security-monitor
 
 jobs:
   security_monitor:
