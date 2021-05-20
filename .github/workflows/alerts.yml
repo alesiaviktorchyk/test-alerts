@@ -16,6 +16,7 @@ jobs:
     name: Security Monitor
     steps:
     - name: Security Monitor
-      uses: oneflow/security-monitor-action@master
+      uses: oneflow/security-monitor-action@fix\/duplicated-message
       with:
         gh-pat: ${{ secrets.gh_pat }} # github personal access token
+        action-user: ${{ secrets.action_user }}
