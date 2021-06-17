@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   security_monitor:
-    if: github.head_ref.match(/ref\/head\/dependabot/)
+    if: github.head_ref.match(/dependabot/)
     runs-on: ubuntu-latest
     name: Security Monitor
     steps:
