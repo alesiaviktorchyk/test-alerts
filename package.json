@@ -8,6 +8,7 @@
   },
   "author": "Alesia",
   "dependencies": {
+    "axios": "^0.18.1",
     "graphql-request": "^1.8.2",
     "handlebars": "^2.0.0",
     "lodash": "^4.17.19",
