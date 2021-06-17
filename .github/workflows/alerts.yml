@@ -1,13 +1,12 @@
 name: Security Monitor GitHub Action
 
 on:
-  push:
-#     types:
-#       - opened
-#       - reopened
-#       - synchronize
-#       - review_requested
-    branches-ignore:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
       - "dependabot/**"
 concurrency:
   group: security-monitor
@@ -15,6 +14,7 @@ concurrency:
 
 jobs:
   security_monitor:
+    if: ${{github.head_ref.match(/dependabot\//)}}
     runs-on: ubuntu-latest
     name: Security Monitor
     steps:
