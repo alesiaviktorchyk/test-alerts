@@ -7,7 +7,7 @@ on:
       - reopened
       - synchronize
     branches:
-      - "dependabot/**"
+      - "*"
 concurrency:
   group: security-monitor
   cancel-in-progress: true
