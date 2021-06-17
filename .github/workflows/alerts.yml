@@ -8,18 +8,33 @@ on:
       - synchronize
     branches:
       - "*"
-concurrency:
-  group: security-monitor
-  cancel-in-progress: true
 
 jobs:
   security_monitor:
-    if: github.head_ref == 'dependabot/check'
+    if: contains(github.head_ref, '!dependabot')
     runs-on: ubuntu-latest
     name: Security Monitor
+    concurrency: security-monitor
     steps:
     - name: Security Monitor
       uses: alesiaviktorchyk/security-check-action@master
       with:
-        gh-pat: ${{ secrets.gh_pat }} # github personal access token
+        gh-pat: ${{secrets.gh_pat}} # github personal access token
         action-user: ${{ secrets.action_user }}
+
+  pass_status:
+    if: contains(github.head_ref, 'dependabot')
+    runs-on: ubuntu-latest
+    name: Pass Status for dependabot
+    permissions: 
+      statuses: write
+    concurrency: pass-dependabot-status-check
+    steps:
+      - name: pass status
+        run: |
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" \
+            https://api.github.com/repos/${{github.repository}}/statuses/${{github.sha}} \
+            -d '{"state":"success", "context": "security-monitor"}'
