@@ -1,12 +1,12 @@
 name: Security Monitor GitHub Action
 
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - review_requested
+  push:
+#     types:
+#       - opened
+#       - reopened
+#       - synchronize
+#       - review_requested
     branches-ignore:
       - "dependabot/**"
 concurrency:
