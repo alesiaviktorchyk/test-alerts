@@ -33,7 +33,7 @@ jobs:
             await github.repos.createCommitStatus({
               context: 'security-monitor',
               owner: context.repo.owner,
-              repo: context.repo,
+              repo: context.repo.repo,
               sha: context.sha,
               state: 'success'
             });
