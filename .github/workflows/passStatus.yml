@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Pass Status for dependabot
     concurrency: pass-dependabot-status-check
+    permissions: 
+      statuses: write
     if: >
       ${{ github.event.workflow_run.event == 'pull_request' &&
       contains(github.head_ref, 'dependabot') }}
