@@ -1,7 +1,7 @@
 name: Security Monitor GitHub Action
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - reopened
@@ -21,3 +21,20 @@ jobs:
       with:
         gh-pat: ${{secrets.gh_pat}} # github personal access token
         action-user: ${{ secrets.action_user }}
+
+  pass_status:
+    if: contains(github.head_ref, 'dependabot')
+    runs-on: ubuntu-latest
+    name: Pass Status for dependabot
+    permissions: 
+      statuses: write
+    concurrency: pass-dependabot-status-check
+    steps:
+      - name: pass status
+        run: |
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" \
+            https://api.github.com/repos/${{github.repository}}/statuses/${{github.sha}} \
+            -d '{"state":"success", "context": "security-monitor"}'
