@@ -27,8 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       statuses: write
-    env:
-      GITHUB_TOKEN: ${{ secrets.gh_pat }}
     name: Pass security-monitor status check for dependabot
     steps:
       - name: pass security-monitor status check for dependabot
