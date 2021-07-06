@@ -6,6 +6,7 @@ on:
       - opened
       - reopened
       - synchronize
+      - edited
     branches:
       - "*"
 
@@ -14,25 +15,19 @@ jobs:
     if: ${{ !contains(github.head_ref, 'dependabot') }}
     runs-on: ubuntu-latest
     name: Security Monitor
-    permissions: 
-      statuses: write
-    concurrency: security-monitor
     steps:
     - name: Security Monitor
-      uses: alesiaviktorchyk/security-check-action@master
+      uses: oneflow/security-monitor-action@master
       with:
-        gh-pat: ${{secrets.gh_pat}} # github personal access token
+        gh-pat: ${{ secrets.GITHUB_TOKEN }} # github personal access token
         action-user: ${{ secrets.action_user }}
 
   pass_dependabot_status:
-    if: contains(github.head_ref, 'dependabot')
+    if: ${{ contains(github.head_ref, 'dependabot') }}
     runs-on: ubuntu-latest
     name: Pass security-monitor status check for dependabot
-    permissions: 
-      statuses: write
-    concurrency: pass-dependabot-status-check
     steps:
-      - name: pass status
+      - name: pass security-monitor status check for dependabot
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
