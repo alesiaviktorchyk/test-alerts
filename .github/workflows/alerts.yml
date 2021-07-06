@@ -19,7 +19,7 @@ jobs:
     - name: Security Monitor
       uses: oneflow/security-monitor-action@master
       with:
-        gh-pat: ${{ secrets.GITHUB_TOKEN }} # github personal access token
+        gh-pat: ${{ secrets.gh_pat }} # github personal access token
         action-user: ${{ secrets.action_user }}
 
   pass_dependabot_status:
@@ -30,7 +30,7 @@ jobs:
       - name: pass security-monitor status check for dependabot
         uses: actions/github-script@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.gh_pat }}
           script: |
             await github.repos.createCommitStatus({
               context: 'security-monitor',
