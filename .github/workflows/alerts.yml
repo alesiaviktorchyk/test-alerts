@@ -1,8 +1,5 @@
 name: Security Monitor GitHub Action
 
-permissions:
-  checks: read
-
 on:
   pull_request_target:
     types:
@@ -28,6 +25,8 @@ jobs:
   pass_dependabot_status:
     if: ${{ contains(github.head_ref, 'dependabot') }}
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
     name: Pass security-monitor status check for dependabot
     steps:
       - name: pass security-monitor status check for dependabot
