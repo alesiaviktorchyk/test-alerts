@@ -26,6 +26,8 @@ jobs:
     if: ${{ contains(github.head_ref, 'dependabot') }}
     runs-on: ubuntu-latest
     name: Pass security-monitor status check for dependabot
+    permissions:
+      checks: read
     steps:
       - name: pass security-monitor status check for dependabot
         uses: actions/github-script@v3
