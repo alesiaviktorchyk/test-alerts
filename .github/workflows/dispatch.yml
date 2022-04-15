@@ -1,0 +1,25 @@
+name: workflow dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      prNumber:
+        description: 'Number of PR for which you want to trigger an action'     
+        required: true
+
+jobs:
+  get_PR_data:
+    runs-on: ubuntu-latest
+    name: Get PR data
+    steps:
+    - name: Get PR data
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          await github.issues.update({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: ${{ github.event.inputs.prNumber }},
+            body: 'udpate'
+          });
