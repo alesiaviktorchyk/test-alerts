@@ -16,7 +16,7 @@ on:
 
 jobs:
   get_PR_data:
-    if: ${{ github.event_name !== 'pull_request_target' }}
+    if: ${{ github.event_name != 'pull_request_target' }}
     runs-on: ubuntu-latest
     name: Get PR data
     steps:
