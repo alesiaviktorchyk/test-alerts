@@ -1,16 +1,10 @@
 name: Security Monitor GitHub Action
 
 on:
-  workflow_dispatch:
-    inputs:
-      username:
-        required: true
-        type: "string"
   pull_request_target:
     types:
       - opened
       - reopened
-      - synchronize
       - edited
     branches:
       - "*"
@@ -34,15 +28,15 @@ jobs:
       statuses: write
     name: Pass security-monitor status check for dependabot
     steps:
-      - name: pass security-monitor status check for dependabot
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.repos.createCommitStatus({
-              context: 'security-monitor',
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.pull_request.head.sha,
-              state: 'success'
-            });
+    - name: pass security-monitor status check for dependabot
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          await github.repos.createCommitStatus({
+            context: 'security-monitor',
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.pull_request.head.sha,
+            state: 'success'
+          });
