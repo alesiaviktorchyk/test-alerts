@@ -1,6 +1,11 @@
 name: Security Monitor GitHub Action
 
 on:
+  workflow_dispatch:
+    inputs:
+      username:
+        required: true
+        type: "string"
   pull_request_target:
     types:
       - opened
