@@ -3,10 +3,12 @@ name: Security Monitor GitHub Action
 on:
   workflow_dispatch:
     inputs:
-      username:
+      GH_PAT:
         required: true
-        type: "string"
-        default: ${{ github.actor }}
+        default: ${{ secrets.gh_pat }}
+      action_user:
+        required: true
+        default: ${{ secrets.action_user }}
   pull_request_target:
     types:
       - opened
