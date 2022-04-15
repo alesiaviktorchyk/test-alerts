@@ -16,7 +16,7 @@ on:
 
 jobs:
   get_PR_data:
-    if: ${{ github.event_name != 'pull_request_target' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     name: Get PR data
     steps:
@@ -32,8 +32,7 @@ jobs:
           });
 
   security_monitor:
-    needs: get_PR_data
-    if: ${{ !contains(github.head_ref, 'dependabot') }}
+    if: ${{ !contains(github.head_ref, 'dependabot') && github.event_name == 'pull_request_target' }}
     runs-on: ubuntu-latest
     name: Security Monitor
     steps:
@@ -44,7 +43,7 @@ jobs:
         action-user: ${{ secrets.action_user }}
 
   pass_dependabot_status:
-    if: ${{ contains(github.head_ref, 'dependabot') }}
+    if: ${{ contains(github.head_ref, 'dependabot') && github.event_name == 'pull_request_target' }}
     runs-on: ubuntu-latest
     permissions:
       statuses: write
