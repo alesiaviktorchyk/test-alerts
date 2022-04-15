@@ -10,14 +10,13 @@ on:
     types:
       - opened
       - reopened
-      - synchronize
       - edited
     branches:
       - "*"
 
 jobs:
   get_PR_data:
-    if: ${{ github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name !== 'pull_request_target' }}
     runs-on: ubuntu-latest
     name: Get PR data
     steps:
@@ -26,7 +25,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          await github.issues.get({
+          await github.issues.update({
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: ${{ github.event.inputs.prNumber }}
