@@ -6,6 +6,7 @@ on:
       username:
         required: true
         type: "string"
+        default: github.actor
   pull_request_target:
     types:
       - opened
