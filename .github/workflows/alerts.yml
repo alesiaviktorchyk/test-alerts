@@ -2,18 +2,37 @@ name: Security Monitor GitHub Action
 
 on:
   workflow_dispatch:
+    inputs:
+      prNumber:
+        description: 'Number of PR for which you want to trigger an action'     
+        required: true
   pull_request_target:
     types:
       - opened
       - reopened
-      - synchronize
       - edited
     branches:
       - "*"
 
 jobs:
+  get_PR_data:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    name: Get PR data
+    steps:
+    - name: Get PR data
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          await github.issues.update({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: ${{ github.event.inputs.prNumber }}
+          });
+
   security_monitor:
-    if: ${{ !contains(github.head_ref, 'dependabot') }}
+    if: ${{ !contains(github.head_ref, 'dependabot') && github.event_name == 'pull_request_target' }}
     runs-on: ubuntu-latest
     name: Security Monitor
     steps:
@@ -24,21 +43,21 @@ jobs:
         action-user: ${{ secrets.action_user }}
 
   pass_dependabot_status:
-    if: ${{ contains(github.head_ref, 'dependabot') }}
+    if: ${{ contains(github.head_ref, 'dependabot') && github.event_name == 'pull_request_target' }}
     runs-on: ubuntu-latest
     permissions:
       statuses: write
     name: Pass security-monitor status check for dependabot
     steps:
-      - name: pass security-monitor status check for dependabot
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.repos.createCommitStatus({
-              context: 'security-monitor',
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.pull_request.head.sha,
-              state: 'success'
-            });
+    - name: pass security-monitor status check for dependabot
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          await github.repos.createCommitStatus({
+            context: 'security-monitor',
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.pull_request.head.sha,
+            state: 'success'
+          });
