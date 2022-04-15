@@ -31,7 +31,9 @@ jobs:
             repo: context.repo.repo,
             issue_number: ${{ github.event.inputs.prNumber }}
           });
+
   security_monitor:
+    needs: get_PR_data
     if: ${{ !contains(github.head_ref, 'dependabot') }}
     runs-on: ubuntu-latest
     name: Security Monitor
