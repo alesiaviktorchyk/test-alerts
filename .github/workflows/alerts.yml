@@ -28,7 +28,8 @@ jobs:
           await github.issues.update({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            issue_number: ${{ github.event.inputs.prNumber }}
+            issue_number: ${{ github.event.inputs.prNumber }}б
+            body: 'udpate'
           });
 
   security_monitor:
