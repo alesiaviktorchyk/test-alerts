@@ -18,6 +18,8 @@ jobs:
   get_PR_data:
     if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
+    permissions:
+      statuses: write
     name: Get PR data
     steps:
     - name: Get PR data
